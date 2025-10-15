@@ -8,7 +8,7 @@ export default class HelloWorldScene extends Phaser.Scene {
 	private stars?: Phaser.Physics.Arcade.Group
 
 	private score = 0
-	private scoreText? = Phaser.GameObjects.Text
+	private scoreText?: Phaser.GameObjects.Text
 
 	private bombs?: Phaser.Physics.Arcade.Group
 	private gameOver = false
@@ -93,9 +93,10 @@ export default class HelloWorldScene extends Phaser.Scene {
 		this.physics.add.overlap(this.player, this.stars, this.handleCollectStar, undefined, this)
 
 		//score handling
+		this.scoreText = 
 		this.scoreText = this.add.text(16, 16, 'score: 0', {
 			fontSize: '32px',
-			fill: '#000'
+			color: '#000'
 		})
 
 		//bombs
@@ -105,8 +106,9 @@ export default class HelloWorldScene extends Phaser.Scene {
 		this.physics.add.collider(this.player, this.bombs, this.handleHitBomb, undefined, this)
 	}
 
-	private handleHitBomb(player: Phaser.GameObjects.GameObject, b: Phaser.GameObjects.GameObject){
+	private handleHitBomb(p: Phaser.GameObjects.GameObject, b: Phaser.GameObjects.GameObject){
 		const bomb = b as Phaser.Physics.Arcade.Image
+		const player = p as Phaser.Physics.Arcade.Sprite
 		this.physics.pause()
 
 		this.player?.setTint(0xff0000)
@@ -116,8 +118,9 @@ export default class HelloWorldScene extends Phaser.Scene {
 		this.scoreText?.setText('Game Over. SHIFT to Play Again')
 	}
 
-	private handleCollectStar(player: Phaser.GameObjects.GameObject, s: Phaser.GameObjects.GameObject){
+	private handleCollectStar(p: Phaser.GameObjects.GameObject, s: Phaser.GameObjects.GameObject){
 		const star = s as Phaser.Physics.Arcade.Image
+		const player = p as Phaser.Physics.Arcade.Sprite
 		star.disableBody(true, true)
 
 		this.score += 10
